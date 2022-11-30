@@ -4,7 +4,7 @@
   "description": "Advent of Code 2022",
   "main": "dist/index.js",
   "scripts": {
-    "start": "tsc && node ."
+    "start": "rimraf dist && tsc && node ."
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.0"
+    "prettier": "^2.8.0",
+    "rimraf": "^3.0.2"
   }
 }
