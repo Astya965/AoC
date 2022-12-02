@@ -30,6 +30,7 @@ const RESULT_VALUE = {
 
 const answerError =new Error("Wrong answer type");
 
+// Get points for result
 const getResultType = (result: string) => {
   switch (result) {
     case RESULT_VALUE.LOSE:
@@ -43,6 +44,8 @@ const getResultType = (result: string) => {
   }
 };
 
+
+// Get point for answer
 const getYourResult = (opponentType: string, resultScore: number) => {
   if (resultScore === RESULT.DRAW) {
     switch (opponentType) {
@@ -57,7 +60,7 @@ const getYourResult = (opponentType: string, resultScore: number) => {
     }
   } else if (resultScore === RESULT.WIN) {
     switch (opponentType) {
-      case OPPONTENT_VALUE.ROCK: // привести пересенные в читаемый вид
+      case OPPONTENT_VALUE.ROCK:
         return SHAPE.PAPER;
       case OPPONTENT_VALUE.PAPER:
         return SHAPE.SCISSORS;
@@ -68,7 +71,7 @@ const getYourResult = (opponentType: string, resultScore: number) => {
     }
   } else {
     switch (opponentType) {
-      case OPPONTENT_VALUE.ROCK: // привести пересенные в читаемый вид
+      case OPPONTENT_VALUE.ROCK:
         return SHAPE.SCISSORS;
       case OPPONTENT_VALUE.PAPER:
         return SHAPE.ROCK;
@@ -80,6 +83,8 @@ const getYourResult = (opponentType: string, resultScore: number) => {
   }
 };
 
+
+// Get score for answer and for result
 const getScore = (value: string) => {
   const [opponentValue, result] = value.split(" ");
 
@@ -88,6 +93,7 @@ const getScore = (value: string) => {
   return myValueScore + resultScore;
 };
 
+//Get sum
 export default input.reduce((acc, curr) => acc + getScore(curr), 0);
 
-// Альетративное быстрое решение для обеих задач сразу выдавать AX = 8, AZ = 9 и т.д.
+// Alter.solution make switch for nine results AX = 3, AY = 4, AZ = 8...

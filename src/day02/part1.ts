@@ -29,6 +29,7 @@ const SHAPE = {
   },
 };
 
+// Sum points for answer and for result
 const getScore = (value: string) => {
     const [oponentValue, myValue] = value.split(' ');
     const myAnswerType = getAnswerType(myValue);
@@ -57,6 +58,5 @@ const getAnswerType = (value: string) => {
     }
 }
 
-const getSum = (arr: string[]) => arr.reduce((acc, curr) => acc + getScore(curr), 0)
-
-export default getSum(input);
+// Sum all points
+export default input.reduce((acc, curr) => acc + getScore(curr), 0);
