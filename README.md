@@ -2,9 +2,7 @@
 
 Advent of Code 2022
 
-Start
-> npm start
-
+## Config
 Npm config includes 3 parametrs: 
 - setup - boolean; add new day
 - date - number; day value
@@ -17,3 +15,9 @@ Command adds directory contains empty files, input.txt, part1.ts, part2.ts. Requ
 ## Get result
 Command returns result of solution. Requests --date and --part
 > npm start --date=1 --part=1
+
+## 2022 list
+1. [Day 1: Calorie Counting](https://github.com/Astya965/AoC/tree/main/src/day01)
+2. [Day 2: Rock Paper Scissors](https://github.com/Astya965/AoC/tree/main/src/day02)
+3. [Day 3: Rucksack Reorganization](https://github.com/Astya965/AoC/tree/main/src/day03)
+4. [Day 4: Camp Cleanup](https://github.com/Astya965/AoC/tree/main/src/day04)
