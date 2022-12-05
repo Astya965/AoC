@@ -45,7 +45,7 @@ const getResultType = (result: string) => {
 };
 
 
-// Get point for answer
+// Get point for shape
 const getYourResult = (opponentType: string, resultScore: number) => {
   if (resultScore === RESULT.DRAW) {
     switch (opponentType) {
@@ -84,7 +84,7 @@ const getYourResult = (opponentType: string, resultScore: number) => {
 };
 
 
-// Get score for answer and for result
+// Get score for shape and for result
 const getScore = (value: string) => {
   const [opponentValue, result] = value.split(" ");
 
@@ -96,4 +96,4 @@ const getScore = (value: string) => {
 //Get sum
 export default input.reduce((acc, curr) => acc + getScore(curr), 0);
 
-// Alter.solution make switch for nine results AX = 3, AY = 4, AZ = 8...
+// Alter.solution is to use switch for nine results AX = 3, AY = 4, AZ = 8...

@@ -41,7 +41,7 @@ const putContainersToMap = (row: string, map: Map<number, string[]>, columnCount
     }
 };
 
-// Change crates order by instruction
+// Change crates order following instructions
 // New model = true for part2
 export const followInstruction = (instruction: string, map: Map<number, string[]>, isNewModel: boolean = false) => {
     const stepList = instruction.split(`\n`);
@@ -63,7 +63,7 @@ export const followInstruction = (instruction: string, map: Map<number, string[]
     });
 };
 
-// Get crate fron top of each column
+// Get crate from top of each column
 export const getTopContainers = (map: Map<number, string[]>) => {
     const entries = Array.from(map.entries()).sort(([columnNumber1], [columnNumber2]) => columnNumber1 - columnNumber2);
     return entries.reduce((acc, [,curr]) => acc += curr[curr.length - 1], '');

@@ -29,7 +29,7 @@ const findElfsCalories = (initialArray: number[]) => {
 };
 export const caloriesArr = findElfsCalories(input);
 
-// Find maxs
+// Find max
 const max = Math.max(...caloriesArr);
 export default max;
 

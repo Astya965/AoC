@@ -29,18 +29,18 @@ const SHAPE = {
   },
 };
 
-// Sum points for answer and for result
+// Sum points for shape and for result
 const getScore = (value: string) => {
     const [oponentValue, myValue] = value.split(' ');
-    const myAnswerType = getAnswerType(myValue);
-    const oppenentType = getAnswerType(oponentValue);
+    const myShapeType = getShapeType(myValue);
+    const oppenentType = getShapeType(oponentValue);
 
-    if (myAnswerType === oppenentType) {
-        return RESULT.DRAW + myAnswerType.score;
-    } else if (isWin(myAnswerType, oppenentType)) {
-        return RESULT.WIN + myAnswerType.score;
+    if (myShapeType === oppenentType) {
+        return RESULT.DRAW + myShapeType.score;
+    } else if (isWin(myShapeType, oppenentType)) {
+        return RESULT.WIN + myShapeType.score;
     } else {
-        return RESULT.LOSE + myAnswerType.score;
+        return RESULT.LOSE + myShapeType.score;
     }
 
 }
@@ -48,7 +48,7 @@ const getScore = (value: string) => {
 const isWin = (myValue: ShapeT, oponentValue: ShapeT) => (myValue === SHAPE.ROCK && oponentValue === SHAPE.SCISSORS) 
 || (myValue === SHAPE.PAPER && oponentValue === SHAPE.ROCK)|| (myValue == SHAPE.SCISSORS && oponentValue === SHAPE.PAPER);
 
-const getAnswerType = (value: string) => {
+const getShapeType = (value: string) => {
     if (SHAPE.ROCK.value.includes(value)) {
         return SHAPE.ROCK;
     } else if (SHAPE.PAPER.value.includes(value)) {

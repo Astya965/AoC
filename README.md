@@ -1,19 +1,18 @@
 # AoC
-
 Advent of Code 2022
 
 ## Config
 Npm config includes 3 parametrs: 
-- setup - boolean; add new day
-- date - number; day value
-- part - number; part value
+- setup: boolean - flag for adding template for specified day
+- date: number - day value
+- part: number - part value
 
 ## Add new day
-Command adds directory contains empty files, input.txt, part1.ts, part2.ts. Requests --setup and --date
+Command adds directory which contains empty files: input.txt, part1.ts, part2.ts. Required flags: --setup and --date
 > npm start --setup=true --date=1
 
 ## Get result
-Command returns result of solution. Requests --date and --part
+Command returns solution. Required flags: --date and --part
 > npm start --date=1 --part=1
 
 ## 2022 list
