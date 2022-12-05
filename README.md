@@ -21,3 +21,4 @@ Command returns result of solution. Requests --date and --part
 2. [Day 2: Rock Paper Scissors](https://github.com/Astya965/AoC/tree/main/src/day02)
 3. [Day 3: Rucksack Reorganization](https://github.com/Astya965/AoC/tree/main/src/day03)
 4. [Day 4: Camp Cleanup](https://github.com/Astya965/AoC/tree/main/src/day04)
+5. [Day 5: Supply Stacks](https://github.com/Astya965/AoC/tree/main/src/day05)
