@@ -21,3 +21,4 @@ Command returns solution. Required flags: --date and --part
 3. [Day 3: Rucksack Reorganization](https://github.com/Astya965/AoC/tree/main/src/day03)
 4. [Day 4: Camp Cleanup](https://github.com/Astya965/AoC/tree/main/src/day04)
 5. [Day 5: Supply Stacks](https://github.com/Astya965/AoC/tree/main/src/day05)
+6. [Day 6: Tuning Trouble](https://github.com/Astya965/AoC/tree/main/src/day06)
