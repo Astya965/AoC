@@ -47,12 +47,22 @@ const genTemplate = (part: 1 | 2) => `import { parseInput } from '../util';
 const input = parseInput();
 `;
 
+const readmeTemplate = (day: number) => `# Day ${day}:
+
+## First part
+
+## Second part
+
+[Go to puzzle](https://adventofcode.com/2022/day/${day})
+`
+
 export const setupDay = (day: number) => {
   const dir = `./src/day${formatDay(day)}`;
   mkdirSync(dir);
   writeFileSync(`${dir}/input.txt`, "");
   writeFileSync(`${dir}/part1.ts`, genTemplate(1));
   writeFileSync(`${dir}/part2.ts`, genTemplate(2));
+  writeFileSync(`${dir}/README.md`, readmeTemplate(day));
 };
 
 export const outputSolution = (date: number, currPart: number) =>
