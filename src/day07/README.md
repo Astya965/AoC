@@ -10,31 +10,30 @@ The device the Elves gave you has problems with more than just its communication
 Perhaps you can delete some files to make space for the update?
 
 You browse around the filesystem to assess the situation and save the resulting terminal output (your puzzle input). For example:
->
-$ cd /
-$ ls
-dir a
-14848514 b.txt
-8504156 c.dat
-dir d
-$ cd a
-$ ls
-dir e
-29116 f
-2557 g
-62596 h.lst
-$ cd e
-$ ls
-584 i
-$ cd ..
-$ cd ..
-$ cd d
-$ ls
-4060174 j
-8033020 d.log
-5626152 d.ext
-7214296 k
->
+>$ cd /
+>$ ls
+>dir a
+>14848514 b.txt
+>8504156 c.dat
+>dir d
+>$ cd a
+>$ ls
+>dir e
+>29116 f
+>2557 g
+>62596 h.lst
+>$ cd e
+>$ ls
+>584 i
+>$ cd ..
+>$ cd ..
+>$ cd d
+>$ ls
+>4060174 j
+>8033020 d.log
+>5626152 d.ext
+>7214296 k
+
 The filesystem consists of a tree of files (plain data) and directories (which can contain other directories or files). The outermost directory is called /. You can navigate around the filesystem, moving into or out of directories and listing the contents of the directory you're currently in.
 
 Within the terminal output, lines that begin with $ are commands you executed, very much like some modern computers:
