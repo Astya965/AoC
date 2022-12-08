@@ -7,11 +7,11 @@ The expedition comes across a peculiar patch of tall trees all planted carefully
 First, determine whether there is enough tree cover here to keep a tree house hidden. To do this, you need to count the number of trees that are visible from outside the grid when looking directly along a row or column.
 
 The Elves have already launched a quadcopter to generate a map with the height of each tree (your puzzle input). For example:
-- >30373
-- >25512
-- >65332
-- >33549
-- >35390
+>30373 <br/>
+>25512 <br/>
+>65332 <br/>
+>33549 <br/>
+>35390 <br/>
 
 Each tree is represented as a single digit whose value is its height, where 0 is the shortest and 9 is the tallest.
 
@@ -52,11 +52,11 @@ In the example above, consider the middle 5 in the second row:
 A tree's scenic score is found by multiplying together its viewing distance in each of the four directions. For this tree, this is 4 (found by multiplying 1 * 1 * 2 * 2).
 
 However, you can do even better: consider the tree of height 5 in the middle of the fourth row:
-- >30373
-- >25512
-- >65332
-- >33549
-- >35390
+>30373 <br/>
+>25512 <br/>
+>65332 <br/>
+>33549 <br/>
+>35390 <br/>
 
 - Looking up, its view is blocked at 2 trees (by another tree with a height of 5).
 - Looking left, its view is not blocked; it can see 2 trees.
