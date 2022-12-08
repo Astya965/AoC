@@ -13,7 +13,7 @@ They do, however, have a drawing of the starting stacks of crates and the rearra
 >    [D]     <br/>
 >[N] [C]     <br/>
 >[Z] [M] [P] <br/>
-> 1   2   3  <br/>
+> 1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3  <br/>
 
 - move 1 from 2 to 1
 - move 3 from 1 to 3
@@ -26,24 +26,24 @@ Then, the rearrangement procedure is given. In each step of the procedure, a qua
 >[D]         <br/>
 >[N] [C]     <br/>
 >[Z] [M] [P] <br/>
-> 1   2   3  <br/>
+> 1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3  <br/>
 
 In the second step, three crates are moved from stack 1 to stack 3. Crates are moved one at a time, so the first crate to be moved (D) ends up below the second and third crates:
->        [Z] <br/>
+>    &nbsp;   [Z] <br/>
 >        [N] <br/>
 >    [C] [D] <br/>
 >    [M] [P] <br/>
-> 1   2   3  <br/>
+> 1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3  <br/>
 
 Then, both crates are moved from stack 2 to stack 1. Again, because crates are moved one at a time, crate C ends up below crate M:
->        [Z] <br/>
+>    &nbsp;   [Z] <br/>
 >        [N] <br/>
 >[M]     [D] <br/>
 >[C]     [P] <br/>
 > 1   2   3  <br/>
 
 Finally, one crate is moved from stack 1 to stack 2:
->        [Z] <br/>
+>    &nbsp;   [Z] <br/>
 >        [N] <br/>
 >        [D] <br/>
 >[C] [M] [P] <br/>
