@@ -39,11 +39,11 @@ To measure the viewing distance from a given tree, look up, down, left, and righ
 The Elves don't care about distant trees taller than those found by the rules above; the proposed tree house has large eaves to keep it dry, so they wouldn't be able to see higher than the tree house anyway.
 
 In the example above, consider the middle 5 in the second row:
-- >30373
-- >25512
-- >65332
-- >33549
-- >35390
+>30373 <br/>
+>25512 <br/>
+>65332 <br/>
+>33549 <br/>
+>35390 <br/>
 
 - Looking up, its view is not blocked; it can see 1 tree (of height 3).
 - Looking left, its view is blocked immediately; it can see only 1 tree (of height 5, right next to it).
