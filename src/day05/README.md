@@ -13,7 +13,7 @@ They do, however, have a drawing of the starting stacks of crates and the rearra
 >    [D]     <br/>
 >[N] [C]     <br/>
 >[Z] [M] [P] <br/>
-> 1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3  <br/>
+> 1   2   3  <br/>
 
 - move 1 from 2 to 1
 - move 3 from 1 to 3
@@ -26,24 +26,24 @@ Then, the rearrangement procedure is given. In each step of the procedure, a qua
 >[D]         <br/>
 >[N] [C]     <br/>
 >[Z] [M] [P] <br/>
-> 1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3  <br/>
+> 1   2   3  <br/>
 
 In the second step, three crates are moved from stack 1 to stack 3. Crates are moved one at a time, so the first crate to be moved (D) ends up below the second and third crates:
->    &nbsp;   [Z] <br/>
+>        [Z] <br/>
 >        [N] <br/>
 >    [C] [D] <br/>
 >    [M] [P] <br/>
-> 1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3  <br/>
+> 1   2   3  <br/>
 
 Then, both crates are moved from stack 2 to stack 1. Again, because crates are moved one at a time, crate C ends up below crate M:
->    &nbsp;   [Z] <br/>
+>        [Z] <br/>
 >        [N] <br/>
 >[M]     [D] <br/>
 >[C]     [P] <br/>
 > 1   2   3  <br/>
 
 Finally, one crate is moved from stack 1 to stack 2:
->    &nbsp;   [Z] <br/>
+>        [Z] <br/>
 >        [N] <br/>
 >        [D] <br/>
 >[C] [M] [P] <br/>
@@ -63,37 +63,37 @@ Some mud was covering the writing on the side of the crane, and you quickly wipe
 The CrateMover 9001 is notable for many new and exciting features: air conditioning, leather seats, an extra cup holder, and the ability to pick up and move multiple crates at once.
 
 Again considering the example above, the crates begin in the same configuration:
->    [D]     <br/>
->[N] [C]     <br/>
->[Z] [M] [P] <br/>
-> 1   2   3  <br/>
+-     [D]    
+- [N] [C]    
+- [Z] [M] [P]
+-  1   2   3 
 
 Moving a single crate from stack 2 to stack 1 behaves the same as before:
->[D]         <br/>
->[N] [C]     <br/>
->[Z] [M] [P] <br/>
- 1   2   3   <br/>
+- [D]        
+- [N] [C]    
+- [Z] [M] [P]
+-  1   2   3 
 
 However, the action of moving three crates from stack 1 to stack 3 means that those three moved crates stay in the same order, resulting in this new configuration:
->        [D] <br/>
->        [N] <br/>
->    [C] [Z] <br/>
->    [M] [P] <br/>
-> 1   2   3 <br/>
+-         [D]
+-         [N]
+-     [C] [Z]
+-     [M] [P]
+-  1   2   3
 
 Next, as both crates are moved from stack 2 to stack 1, they retain their order as well:
->        [D] <br/>
->        [N] <br/>
->[C]     [Z] <br/>
->[M]     [P] <br/>
-> 1   2   3  <br/>
+-         [D]
+-         [N]
+- [C]     [Z]
+- [M]     [P]
+-  1   2   3
 
 Finally, a single crate is still moved from stack 1 to stack 2, but now it's crate C that gets moved:
->        [D] <br/>
->        [N] <br/>
->        [Z] <br/>
->[M] [C] [P] <br/>
-> 1   2   3  <br/>
+-         [D]
+-         [N]
+-         [Z]
+- [M] [C] [P]
+-  1   2   3
 In this example, the CrateMover 9001 has put the crates in a totally different order: MCD.
 Before the rearrangement process finishes, update your simulation so that the Elves know where they should stand to be ready to unload the final supplies. 
 
