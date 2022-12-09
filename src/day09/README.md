@@ -13,23 +13,23 @@ Consider a rope with a knot at each end; these knots mark the head and the tail 
 Due to nebulous reasoning involving Planck lengths, you should be able to model the positions of the knots on a two-dimensional grid. Then, by following a hypothetical series of motions (your puzzle input) for the head, you can determine how the tail will move.
 
 Due to the aforementioned Planck lengths, the rope must be quite short; in fact, the head (H) and tail (T) must always be touching (diagonally adjacent and even overlapping both count as touching):
-....
-.TH.
-....
+....  <br/>
+.TH.  <br/>
+....  <br/>
+ <br/>
+....  <br/>
+.H..  <br/>
+..T.  <br/>
+....  <br/>
 
-....
-.H..
-..T.
-....
-
-...
-.H. (H covers T)
-...
+...  <br/>
+.H. (H covers T)  <br/>
+...  <br/>
 
 If the head is ever two steps directly up, down, left, or right from the tail, the tail must also move one step in that direction so it remains close enough:
-.....    .....    .....
-.TH.. -> .T.H. -> ..TH.
-.....    .....    .....
+.....    .....    .....  <br/>
+.TH.. -> .T.H. -> ..TH.  <br/>
+.....    .....    .....  <br/>
 
 ...    ...    ...
 .T.    .T.    ...
@@ -52,14 +52,14 @@ Otherwise, if the head and tail aren't touching and aren't in the same row or co
 You just need to work out where the tail goes as the head follows a series of motions. Assume the head and the tail both start at the same position, overlapping.
 
 For example:
-> R 4
-> U 4
-> L 3
-> D 1
-> R 4
-> D 1
-> L 5
-> R 2
+> R 4 <br/>
+> U 4 <br/>
+> L 3 <br/>
+> D 1 <br/>
+> R 4 <br/>
+> D 1 <br/>
+> L 5 <br/>
+> R 2 <br/>
 
 This series of motions moves the head right four steps, then up four steps, then left three steps, then down one step, and so on. After each step, you'll need to update the position of the tail if the step means the head is no longer adjacent to the tail. Visually, these motions occur as follows (s marks the starting position as a reference point):
 
@@ -423,14 +423,14 @@ H123..  (2 covers 4)
 Now, you need to keep track of the positions the new tail, 9, visits. In this example, the tail never moves, and so it only visits 1 position. However, be careful: more types of motion are possible than before, so you might want to visually compare your simulated rope to the one above.
 
 Here's a larger example:
-> R 5
-> U 8
-> L 8
-> D 3
-> R 17
-> D 10
-> L 25
-> U 20
+> R 5 <br/>
+> U 8 <br/>
+> L 8 <br/>
+> D 3 <br/>
+> R 17 <br/>
+> D 10 <br/>
+> L 25 <br/>
+> U 20 <br/>
 
 These motions occur as follows (individual steps are not shown):
 
