@@ -25,3 +25,4 @@ Command returns solution. Required flags: --date and --part
 7. [Day 7: No Space Left On Device](https://github.com/Astya965/AoC/tree/main/src/day07)
 8. [Day 8: Treetop Tree House](https://github.com/Astya965/AoC/tree/main/src/day08)
 9. [Day 9: Rope Bridge](https://github.com/Astya965/AoC/tree/main/src/day09)
+9. [Day 10: Cathode-Ray Tube](https://github.com/Astya965/AoC/tree/main/src/day10)

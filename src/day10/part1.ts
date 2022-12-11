@@ -4,42 +4,41 @@ const input = parseInput({
 });
 
 const START_VALUE = 1;
-const FIRST_CHECK = 20;
-const LAST_CHECK = 220;
-const CHECK_STEP = 40;
 const EMPTY_CYCLE = "noop";
+const SIGNAL_CYCLE_VALUE = 20;
+const SIGNAL_CYCLE_SHIFT = 40;
 
-const getCycleValues = (input: string[]) => {
+const getRegisterValues = (input: string[]) => {
   let registerValue: number = START_VALUE;
+  let registerValues: Map<number, number> = new Map();
   let cyclesCount: number = 0;
-  let cycleValues: number[] = [];
 
   for (let i = 0; i < input.length; i++) {
     if (input[i] === EMPTY_CYCLE) {
-        cyclesCount = updateCycle(registerValue, cyclesCount, cycleValues);
+      cyclesCount++;
+      registerValues.set(cyclesCount, registerValue);
     } else {
-        const [, value] = input[i].split(" ");
-        cyclesCount = updateCycle(registerValue, cyclesCount, cycleValues);
-        cyclesCount = updateCycle(registerValue, cyclesCount, cycleValues);
-        registerValue += Number(value);
+      const [, value] = input[i].split(" ");
+      cyclesCount++;
+      registerValues.set(cyclesCount, registerValue);
+      cyclesCount++;
+      registerValues.set(cyclesCount, registerValue);
+      registerValue += Number(value);
     }
   }
-
-  console.log(cycleValues);
-  return cycleValues;
+  return registerValues;
 };
 
-const updateCycle = (registerValue: number, cyclesCount: number, cycleValues: number[]) => {
-    cyclesCount++
-    checkCycleCount(registerValue, cyclesCount, cycleValues);
-    return cyclesCount;
-}
-
-const checkCycleCount = (registerValue: number, cyclesCount: number, cycleValues: number[]) => {
-    //20th, 60th, 100th, 140th, 180th, and 220th
-    if (cyclesCount >= FIRST_CHECK && cyclesCount <= LAST_CHECK && (cyclesCount % CHECK_STEP === FIRST_CHECK)) {
-        cycleValues.push(registerValue * cyclesCount);
-    }
+const getSignalCycleValues = (registerValues: Map<number, number>) => {
+  return Array.from(registerValues.entries())
+    .filter(
+      ([cycle,]) =>
+        cycle === SIGNAL_CYCLE_VALUE ||
+        cycle % SIGNAL_CYCLE_SHIFT === SIGNAL_CYCLE_VALUE //20th, 60th, 100th, 140th, 180th, and 220th
+    )
+    .reduce((acc, [cycle, value]) => acc + cycle * value, 0);
 };
 
-export default getCycleValues(input).reduce((acc, cur) => acc + cur, 0);
+const registerValues = getRegisterValues(input)
+
+export default getSignalCycleValues(registerValues);
