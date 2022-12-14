@@ -70,7 +70,7 @@ const isReachable = (current: string, neighbour: string) => {
   } else if (neighbour === "E") {
     neighbourCode = "z".charCodeAt(0);
   }
-  return Math.abs(currentCode - neighbourCode) <= 1; // If reachable distance = 1, else = -1
+  return neighbourCode - currentCode <= 1; // If reachable distance = 1, else = -1
 };
 
 // Dijkstra’s algorithm
@@ -95,10 +95,6 @@ const shortPath = (
       }
     });
     processed.add(node);
-    if (getLowestCostNode(costs, processed) == null) {
-        console.log(node);
-        console.log(Array.from(neighbours.keys()).every(node => processed.has(node)));
-    }
     node = getLowestCostNode(costs, processed);
   }
   return costs.get(end) || Infinity;
