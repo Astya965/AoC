@@ -10,12 +10,12 @@ const input = parseInput({
 
 const getGraphInfo = (input: string[][]) => {
   const graph: Map<string, Map<string, number>> = new Map();
-  let start: string | null = null;
-  let end: string | null = null;
+  let start: string = "0,0";
+  let end: string = "0,0";
 
   for (let y = 0; y < input.length; y++) {
     for (let x = 0; x < input[0].length; x++) {
-      const neighbours = new Map();
+      const neighbours: Map<string, number> = new Map();
       setNeighbours(x, y, input, neighbours);
       graph.set(`${x},${y}`, neighbours);
 
@@ -54,101 +54,73 @@ const setNeighbours = (
   if (x < input[0].length - 1 && isReachable(currentValue, input[y][x + 1])) {
     neighbours.set(`${x + 1},${y}`, 1); //right value
   }
+  return neighbours;
 };
 
 const isReachable = (current: string, neighbour: string) => {
-  if (neighbour === "S" || neighbour === "E" || current === "S" || current === "E" ) {
-    return true;
+  let currentCode = current.charCodeAt(0);
+  let neighbourCode = neighbour.charCodeAt(0);
+  if (current === "S") {
+    currentCode = "a".charCodeAt(0);
+  } else if (current === "E") {
+    currentCode = "z".charCodeAt(0);
   }
-  return Math.abs(current.charCodeAt(0) - neighbour.charCodeAt(0)) <= 1; // If reachable distance = 1, else = -1
+  if (neighbour === "S") {
+    neighbourCode = "a".charCodeAt(0);
+  } else if (neighbour === "E") {
+    neighbourCode = "z".charCodeAt(0);
+  }
+  return Math.abs(currentCode - neighbourCode) <= 1; // If reachable distance = 1, else = -1
 };
 
-const findPath = (
-  start: string | null,
-  end: string | null,
-  graph: Map<string, Map<string, number>>
+// Dijkstra’s algorithm
+const shortPath = (
+  graph: Map<string, Map<string, number>>,
+  start: string,
+  end: string
 ) => {
-  if (!start || !end) {
-    return new Map();
-  }
-
-  const processed: string[] = [];
   const costs: Map<string, number> = new Map();
+  const processed: Set<string> = new Set();
   costs.set(start, 0);
-  const route: Map<string, string> = new Map();
-  const startNeighbours: Map<string, number> = graph.get(start) || new Map();
-  startNeighbours.forEach((_, key) => {
-    route.set(key, start);
-  });
 
   let node = getLowestCostNode(costs, processed);
-
-  let cost = 0;
-  let newCost = 0;
-  let neighbours: Map<string, number> = new Map();
-
   while (node) {
-    neighbours = graph.get(node) || new Map();
-    cost = costs.get(node) ?? Infinity;
-    neighbours.forEach((neighbourCost, neighbourCoords) => {
-      if (!costs.has(neighbourCoords)) {
-        costs.set(neighbourCoords, Infinity);
-      }
-      newCost = cost + neighbourCost;
-      if ((costs.get(neighbourCoords) ?? Infinity) > newCost) {
-        costs.set(neighbourCoords, newCost);
-        route.set(neighbourCoords, node || "");
+    const currentCost = costs.get(node) ?? Infinity;
+    const neighbours = graph.get(node) || new Map();
+    neighbours.forEach((neighboursCost, neighboursCoordinates) => {
+      const oldCost = costs.get(neighboursCoordinates) ?? Infinity;
+      let newCost = currentCost + neighboursCost;
+      if (newCost < oldCost) {
+        costs.set(neighboursCoordinates, newCost); // Update lowest cost for node
       }
     });
-
-    if (node === end) {
-      break;
+    processed.add(node);
+    if (getLowestCostNode(costs, processed) == null) {
+        console.log(node);
+        console.log(Array.from(neighbours.keys()).every(node => processed.has(node)));
     }
-    processed.push(node);
     node = getLowestCostNode(costs, processed);
   }
-
-  return route;
+  return costs.get(end) || Infinity;
 };
 
 const getLowestCostNode = (
   costs: Map<string, number>,
-  proccessed: string[]
+  processed: Set<string>
 ) => {
   let lowestCost = Infinity;
-  let lowestCostNode = null;
+  let lowestNode = null;
 
-  costs.forEach((cost: number, coords: string) => {
-    if (cost < lowestCost && !proccessed.includes(coords)) {
+  costs.forEach((cost, coordinates) => {
+    if (cost < lowestCost && !processed.has(coordinates)) {
       lowestCost = cost;
-      lowestCostNode = coords;
+      lowestNode = coordinates;
     }
   });
-  return lowestCostNode;
+  return lowestNode;
 };
 
 const { graph, start, end } = getGraphInfo(input);
-export default findPath(start, end, graph);
-
-// const start = "0,0";
-// const end = "3,4";
-
-// const getPathFromEnd = (
-//   route: Map<string, string>,
-//   start: string | null,
-//   end: string | null
-// ) => {
-//   if (!start || !end) {
-//     return;
-//   }
-//   let currentNode: string = end;
-//   const points = [end];
-//   while (currentNode !== start) {
-//     currentNode = route.get(currentNode) || "";
-//     points.push(currentNode);
-//   }
-//   console.log(points.join(" ---> "));
-//   return points.length - 1;
-// };
-
-// export default getPathFromEnd(findPath(start, end, graph), start, end);
+console.log("Start: " + start);
+console.log("End: " + end);
+export default shortPath(graph, start, end);
