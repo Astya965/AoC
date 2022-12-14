@@ -1,17 +1,18 @@
 import { parseInput } from "../util";
 
 // Grid 144x40
-const input = parseInput({
+export const input = parseInput({
   split: {
     delimiter: "\n",
     mapper: (value: string) => value.split(""),
   },
 });
 
-const getGraphInfo = (input: string[][]) => {
+export const getGraphInfo = (input: string[][]) => {
   const graph: Map<string, Map<string, number>> = new Map();
   let start: string = "0,0";
   let end: string = "0,0";
+  const lowlands: string[] = [];
 
   for (let y = 0; y < input.length; y++) {
     for (let x = 0; x < input[0].length; x++) {
@@ -25,12 +26,16 @@ const getGraphInfo = (input: string[][]) => {
       if (input[y][x] === "E") {
         end = `${x},${y}`;
       }
+      if (input[y][x] === "a" || input[y][x] === "S") {
+        lowlands.push(`${x},${y}`);
+      }
     }
   }
   return {
     graph,
     start,
     end,
+    lowlands
   };
 };
 
@@ -70,14 +75,13 @@ const isReachable = (current: string, neighbour: string) => {
   } else if (neighbour === "E") {
     neighbourCode = "z".charCodeAt(0);
   }
-  return neighbourCode - currentCode <= 1; // If reachable distance = 1, else = -1
+  return currentCode - neighbourCode <= 1; // If searching for a path from the end
 };
 
 // Dijkstra’s algorithm
-const shortPath = (
+export const dijkstra = (
   graph: Map<string, Map<string, number>>,
-  start: string,
-  end: string
+  start: string
 ) => {
   const costs: Map<string, number> = new Map();
   const processed: Set<string> = new Set();
@@ -97,7 +101,7 @@ const shortPath = (
     processed.add(node);
     node = getLowestCostNode(costs, processed);
   }
-  return costs.get(end) || Infinity;
+  return costs;
 };
 
 const getLowestCostNode = (
@@ -117,6 +121,5 @@ const getLowestCostNode = (
 };
 
 const { graph, start, end } = getGraphInfo(input);
-console.log("Start: " + start);
-console.log("End: " + end);
-export default shortPath(graph, start, end);
+const costs = dijkstra(graph, end);
+export default costs.get(start);
