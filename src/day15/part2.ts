@@ -28,7 +28,6 @@ const getFrequency = (input: string[][]) => {
   for (let y = MIN; y <= MAX; y++) {
     for (let x = MIN; x <= MAX; x++) {
       visible = false;
-      console.log(x + ',' + y)
 
       for (let j = 0; j < sensorArray.length; j++) {
         const [coordinates, distance] = sensorArray[j];
