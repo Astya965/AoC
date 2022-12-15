@@ -1,4 +1,4 @@
-# Day 15:
+# Day 15: Beacon Exclusion Zone
 
 ## First part
 
