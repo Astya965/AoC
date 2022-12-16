@@ -6,26 +6,48 @@ const input = parseInput({
   },
 });
 
+class Node {
+  id: string;
+  rate: number;
+  open: boolean;
+  neighbours: string[];
+  pathes: Map<string, number>;
+  constructor(id: string, rate: number, neighbours: string[], open: boolean) {
+    this.id = id;
+    this.rate = rate;
+    this.open = open; // Let's assume that nodes with zero-rate are already open
+    this.neighbours = neighbours;
+    this.pathes = new Map();
+  }
+}
+
 const START = "AA";
 const MINUTES = 30;
 const MOVE_COST = 1;
 const OPEN_COST = 1;
 
 const getNodeMap = (input: string[][]) => {
-  const nodeCosts: Map<string, number> = new Map();
-  const nodeRate: Map<string, number> = new Map();
-  const nodeMap: Map<string, string[]> = new Map();
+  const nodeMap: Map<string, Node> = new Map();
 
   for (let i = 0; i < input.length; i++) {
     const [info, neighboursInfo] = input[i];
-    const { name, rate } = parseInfo(info);
+    const { id, rate } = parseInfo(info);
     const neighbours = parseNeighbours(neighboursInfo);
 
-    nodeRate.set(name, rate);
-    nodeCosts.set(name, MINUTES - rate + MOVE_COST);
-    nodeMap.set(name, neighbours);
+    nodeMap.set(id, new Node(id, rate, neighbours, rate === 0));
   }
-  return { nodeMap, nodeCosts, nodeRate };
+
+  nodeMap.forEach((node, id) => {
+    nodeMap.forEach((anotherNode, anotherNodeId) => {
+      if (id !== anotherNodeId) {
+        node.pathes.set(
+          anotherNode.id,
+          getDistance(nodeMap, id, anotherNodeId)
+        );
+      }
+    });
+  });
+  return nodeMap;
 };
 
 const parseNeighbours = (neighboursInfo: string) => {
@@ -35,81 +57,78 @@ const parseNeighbours = (neighboursInfo: string) => {
 
 const parseInfo = (info: string) => {
   const match = info.match(/([A-Z]{2})\D*(\d+)/) || [];
-  const [, name, rate] = match;
-  return { name: name || "", rate: Number(rate) };
+  const [, id, rate] = match;
+  return { id: id || "", rate: Number(rate) };
 };
 
-const getPressure = (
-  start: string,
-  nodeMap: Map<string, string[]>,
-  nodeCosts: Map<string, number>,
-  nodeRate: Map<string, number>
-) => {
+const getDistance = (graph: Map<string, Node>, start: string, end: string) => {
   const costs: Map<string, number> = new Map();
-  const processed: Set<string> = new Set();
-  const route: Map<number, string> = new Map();
-  let counter = 0;
-  let pressure = 0;
+  const visited: Set<string> = new Set();
+  const queue: string[] = [];
 
   costs.set(start, 0);
+  queue.push(start);
 
-  let node = getLowestCostNode(costs, nodeRate, processed);
-  while (node && counter <= MINUTES) {
-    const currentCost = costs.get(node) ?? Infinity;
-    const neighbours = nodeMap.get(node) || [];
+  while (queue.length > 0) {
+    const current = queue.shift();
+    if (!current) {
+      break;
+    }
+
+    const currentCost = costs.get(current) ?? Infinity;
+    if (current === end) {
+      return currentCost;
+    }
+    const neighbours = graph.get(current)?.neighbours || [];
     neighbours.forEach((neighbour) => {
       const oldCost = costs.get(neighbour) ?? Infinity;
-      let newCost = currentCost + (nodeCosts.get(neighbour) ?? Infinity);
+      const newCost = currentCost + MOVE_COST;
       if (newCost < oldCost) {
         costs.set(neighbour, newCost);
       }
-    });
-
-    counter += MOVE_COST;
-    if (node) {
-      if ((nodeRate.get(node) || 0) > 0) {
-        counter += OPEN_COST;
-        if (counter <= MINUTES) {
-          route.set(counter, node);
-        }
+      if (!visited.has(neighbour)) {
+        queue.push(neighbour);
       }
-    }
-
-    processed.add(node);
-    node = getLowestCostNode(costs, nodeRate, processed);
+    });
+    visited.add(current);
   }
-
-  console.log(route);
-  route.forEach((node, openMinute) => {
-    const rate = nodeRate.get(node) || 0;
-    pressure += rate * (MINUTES - openMinute);
-  });
-
-  return pressure;
+  return Infinity;
 };
 
-const getLowestCostNode = (
-  costs: Map<string, number>,
-  rates: Map<string, number>,
-  processed: Set<string>
+const getPressure = (
+  graph: Map<string, Node>,
+  start: string,
+  pressure: number,
+  time: number
 ) => {
-  let lowestCost = Infinity;
-  let lowestNode = null;
-  const biggestRate = 0;
+  const results: number[] = [];
+  const current = graph.get(start);
+  if (time === 0 || !current) {
+    return pressure;
+  }
+  current.open = true;
+  const pathes = current.pathes;
 
-  costs.forEach((cost, coordinates) => {
-    if (
-      (cost ?? Infinity) <= lowestCost &&
-      (rates.get(coordinates) || 0) >= biggestRate &&
-      !processed.has(coordinates)
-    ) {
-      lowestCost = cost;
-      lowestNode = coordinates;
+  pathes.forEach((distance, id) => {
+    const next = graph.get(id);
+    if (next && !next.open && time > distance) {
+      const nextTime = time - distance - OPEN_COST;
+      const nextPressure = pressure + next.rate * nextTime;
+      results.push(getPressure(graph, id, nextPressure, nextTime));
     }
   });
-  return lowestNode;
+  return Math.max(pressure, ...results);
 };
 
-const { nodeMap, nodeCosts, nodeRate } = getNodeMap(input);
+const nodeMap = getNodeMap(input);
 
-export default getPressure(START, nodeMap, nodeCosts, nodeRate);
+Array.from(nodeMap.values()).map((node) =>
+  console.log(`Node:
+    id = ${node.id},
+    rate = ${node.rate},
+    neighbours = ${node.neighbours},
+    pathes = ${Array.from(node.pathes.entries())}
+`)
+);
+
+export default getPressure(nodeMap, START, 0, MINUTES);
