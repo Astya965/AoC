@@ -9,32 +9,35 @@ const input = parseInput({
 class Node {
   id: string;
   rate: number;
-  open: boolean;
   neighbours: string[];
   pathes: Map<string, number>;
-  constructor(id: string, rate: number, neighbours: string[], open: boolean) {
+  constructor(id: string, rate: number, neighbours: string[]) {
     this.id = id;
     this.rate = rate;
-    this.open = open; // Let's assume that nodes with zero-rate are already open
     this.neighbours = neighbours;
     this.pathes = new Map();
   }
 }
 
-const START = "AA";
-const MINUTES = 30;
+export const START = "AA";
+export const TEAM_TIME = 26;
+const TIME = 30;
 const MOVE_COST = 1;
 const OPEN_COST = 1;
 
 const getNodeMap = (input: string[][]) => {
   const nodeMap: Map<string, Node> = new Map();
+  const openned: Set<string> = new Set();
 
   for (let i = 0; i < input.length; i++) {
     const [info, neighboursInfo] = input[i];
     const { id, rate } = parseInfo(info);
     const neighbours = parseNeighbours(neighboursInfo);
 
-    nodeMap.set(id, new Node(id, rate, neighbours, rate === 0));
+    nodeMap.set(id, new Node(id, rate, neighbours));
+    if (rate === 0) {
+      openned.add(id); // Let's assume that nodes with zero-rate are already open
+    }
   }
 
   nodeMap.forEach((node, id) => {
@@ -47,7 +50,8 @@ const getNodeMap = (input: string[][]) => {
       }
     });
   });
-  return nodeMap;
+
+  return { nodeMap, openned };
 };
 
 const parseNeighbours = (neighboursInfo: string) => {
@@ -95,40 +99,49 @@ const getDistance = (graph: Map<string, Node>, start: string, end: string) => {
   return Infinity;
 };
 
-const getPressure = (
+export const getPressure = (
   graph: Map<string, Node>,
   start: string,
   pressure: number,
-  time: number
+  time: number,
+  openned: Set<string>,
+  isTeamWork: boolean = false
 ) => {
   const results: number[] = [];
   const current = graph.get(start);
   if (time === 0 || !current) {
     return pressure;
   }
-  current.open = true;
   const pathes = current.pathes;
 
   pathes.forEach((distance, id) => {
+    // Search all possible pathes
     const next = graph.get(id);
-    if (next && !next.open && time > distance) {
+    if (next && !openned.has(id) && time > distance) {
+      const nextOpenned = new Set(openned).add(id); // Otherwise, mutate
       const nextTime = time - distance - OPEN_COST;
       const nextPressure = pressure + next.rate * nextTime;
-      results.push(getPressure(graph, id, nextPressure, nextTime));
+      results.push(
+        getPressure(graph, id, nextPressure, nextTime, nextOpenned, isTeamWork)
+      );
+      if (isTeamWork) {
+        // You and another player take a turn one by one.
+        // He know witch node you visited (nextOpenned) and know about current pressure (nextPressure)
+        // But he has as much time as you have before and start from same point (TEAM_TIME, START)
+        results.push(
+          getPressure(
+            graph,
+            START,
+            nextPressure,
+            TEAM_TIME,
+            nextOpenned
+          )
+        ); // Can be oprimized by finding all openned points after your turn (then getPressure for team need be run only one time)
+      }
     }
   });
-  return Math.max(pressure, ...results);
+  return Math.max(pressure, ...results); // Get most effective path
 };
 
-const nodeMap = getNodeMap(input);
-
-Array.from(nodeMap.values()).map((node) =>
-  console.log(`Node:
-    id = ${node.id},
-    rate = ${node.rate},
-    neighbours = ${node.neighbours},
-    pathes = ${Array.from(node.pathes.entries())}
-`)
-);
-
-export default getPressure(nodeMap, START, 0, MINUTES);
+export const { nodeMap, openned } = getNodeMap(input);
+export default getPressure(nodeMap, START, 0, TIME, openned);
