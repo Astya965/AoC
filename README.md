@@ -29,5 +29,6 @@ Command returns solution. Required flags: --date and --part
 11. [Day 11: Monkey in the Middle](https://github.com/Astya965/AoC/tree/main/src/day11)
 12. [Day 12: Hill Climbing Algorithm](https://github.com/Astya965/AoC/tree/main/src/day12)
 13. [Day 13: Distress Signal](https://github.com/Astya965/AoC/tree/main/src/day13)
+13. [Day 14: Regolith Reservoir](https://github.com/Astya965/AoC/tree/main/src/day14)
 15. [Day 15: Beacon Exclusion Zone](https://github.com/Astya965/AoC/tree/main/src/day15)
 15. [Day 16: Proboscidea Volcanium](https://github.com/Astya965/AoC/tree/main/src/day16)
