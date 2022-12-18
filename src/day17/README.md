@@ -1,4 +1,4 @@
-# Day 17:  Pyroclastic Flow
+# Day 17: Pyroclastic Flow
 
 ## First part
 

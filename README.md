@@ -31,4 +31,5 @@ Command returns solution. Required flags: --date and --part
 13. [Day 13: Distress Signal](https://github.com/Astya965/AoC/tree/main/src/day13)
 13. [Day 14: Regolith Reservoir](https://github.com/Astya965/AoC/tree/main/src/day14)
 15. [Day 15: Beacon Exclusion Zone](https://github.com/Astya965/AoC/tree/main/src/day15)
-15. [Day 16: Proboscidea Volcanium](https://github.com/Astya965/AoC/tree/main/src/day16)
+17. [Day 16: Proboscidea Volcanium](https://github.com/Astya965/AoC/tree/main/src/day16)
+17. [Day 17: Pyroclastic Flow](https://github.com/Astya965/AoC/tree/main/src/day17)
