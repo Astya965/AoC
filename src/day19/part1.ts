@@ -25,6 +25,8 @@ const parseBlueprint = (input: string[][]) => {
       parseInfo(obsidianRobotInfo);
     const [geodeRobotOreCost, geodeRobotObsidianCost] =
       parseInfo(geodeRobotInfo);
+
+      
   }
 
   return restrictions;
