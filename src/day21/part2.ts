@@ -10,124 +10,82 @@ const MONKEY_NAME = "root";
 const YOU = "humn";
 const VARIBLE = "x";
 
-const getMonkeyEquation = (input: string[][]) => {
+const getMonkeMap = (input: string[][]) => {
   const monkeyMap: Map<string, string> = new Map();
 
   for (let i = 0; i < input.length; i++) {
     const [name, value] = input[i];
     monkeyMap.set(name, value.trim());
   }
-
-  const rootEquation = getEquation(
-    monkeyMap.get(MONKEY_NAME) || "",
-    monkeyMap,
-    true
-  );
-  return rootEquation;
+  monkeyMap.set(YOU, VARIBLE);
+  return monkeyMap;
 };
 
-const getEquation = (
-  value: string,
-  monkeyMap: Map<string, string>,
-  isRoot: boolean = false
-): string => {
-  if (Number.isNaN(Number(value))) {
-    if (isRoot) {
-      value = value.replace(/[+*\-\/]{1}/, "=");
-    }
-    value = value.replace(/[a-zA-Z]+/g, (value) =>
-      value === YOU
-        ? VARIBLE
-        : getEquation(monkeyMap.get(value) || "", monkeyMap)
-    );
-    if (!isRoot) {
-      return `(${value})`;
-    }
-  }
-  return value;
-};
+const getNumber = (value: string, monkeyMap: Map<string, string>): number => {
+  if (value !== "NaN" && Number.isNaN(Number(value))) {
+    const [val1, operation, val2] = value.split(" ");
+    const num1 = getNumber(monkeyMap.get(val1) || "", monkeyMap);
+    const num2 = getNumber(monkeyMap.get(val2) || "", monkeyMap);
 
-const solveMonkeyEquation = (equation: string) => {
-  let [left, right] = equation
-    .split(" = ")
-    .map((value) => value.substring(1, value.length - 1));
-  const result = left.includes(VARIBLE)
-    ? solveEquation(right)
-    : solveEquation(left);
-};
-
-const solveEquation = (equation: string): number => {
-  if (Number.isNaN(Number(equation))) {
-    if (equation.includes("(")) {
-      const newEquation = equation.replace(
-        /.*\((.+?)\)/g,
-        (init, value) => {
-          if (String(doOperation(value)) === "NaN") {
-            console.log(init);
-          }
-          return String(doOperation(value));
-        }
-      );
-      return solveEquation(newEquation);
-    }
-    return doOperation(equation);
-  }
-  return Number(equation);
-};
-
-const doOperation = (operationString: string): number => {
-  const [val1, operation, val2] = operationString.split(" ");
-  let result: string | number = operationString;
-  switch (operation) {
-    case "+":
-      result = Number(val1) + Number(val2);
-      break;
-    case "-":
-      result = Number(val1) - Number(val2);
-      break;
-    case "*":
-      result = Number(val1) * Number(val2);
-      break;
-    case "/":
-      result = Number(val1) / Number(val2);
-      break;
-  }
-  return Number(result);
-};
-
-const doInverseOperation = (
-  operationString: string,
-  result: number
-): number => {
-  operationString;
-  const numberMatch = operationString.match(/\d+/g);
-  const operationMatch = operationString.match(/[+*\-\/]/g);
-  let varible: string | number = result;
-
-  if (operationMatch && numberMatch) {
-    switch (operationMatch[0]) {
+    switch (operation) {
       case "+":
-        varible = result - Number(numberMatch[0]);
-        break;
+        return num1 + num2;
       case "-":
-        varible = result + Number(numberMatch[0]);
-        break;
+        return num1 - num2;
       case "*":
-        varible = result / Number(numberMatch[0]);
-        break;
+        return num1 * num2;
       case "/":
-        varible =
-          operationString.indexOf(VARIBLE) === 0
-            ? result * Number(numberMatch[0])
-            : Number(numberMatch[0]) / result;
-        break;
+        return num1 / num2;
     }
   }
-  return Number(varible);
+  return Number(value);
 };
 
-const equation = getMonkeyEquation(input);
+const calculateValue = (
+  name: string,
+  monkeyMap: Map<string, string>,
+  result: number = NaN
+): any => {
+  if (name === YOU) {
+    return result;
+  }
+  const value = monkeyMap.get(name) || "";
+  const [val1, operation, val2] = value.split(" ");
+  const num1 = getNumber(monkeyMap.get(val1) || "", monkeyMap);
+  const num2 = getNumber(monkeyMap.get(val2) || "", monkeyMap);
 
-export default solveMonkeyEquation(equation);
-// export default doInverseOperation("(x + 2) / (5 - 1)", 2);
-// x + (4 - 2), 2 .  x=0
+  if (Number.isNaN(num1)) { // Varible in left part
+    if (name === MONKEY_NAME) {
+      return calculateValue(val1, monkeyMap, num2);
+    }
+    switch (operation) {
+      case "+":
+        return calculateValue(val1, monkeyMap, result - num2);
+      case "-":
+        return calculateValue(val1, monkeyMap, result + num2); // x - 4 = 2
+      case "*":
+        return calculateValue(val1, monkeyMap, result / num2);
+      case "/":
+        return calculateValue(val1, monkeyMap, result * num2); // x / 3 = 2
+    }
+  }
+  if (Number.isNaN(num2)) { // Varible in right part
+    if (name === MONKEY_NAME) {
+        return calculateValue(val2, monkeyMap, num1);
+      }
+      switch (operation) {
+        case "+":
+          return calculateValue(val2, monkeyMap, result - num1);
+        case "-":
+          return calculateValue(val2, monkeyMap, num1 - result); // 8 - x = 6
+        case "*":
+          return calculateValue(val2, monkeyMap, result / num1);
+        case "/":
+          return calculateValue(val2, monkeyMap, num1 / result); // 6 / x = 2
+      }
+  }
+};
+
+const monkeyMap = getMonkeMap(input);
+
+export default calculateValue(MONKEY_NAME, monkeyMap);
