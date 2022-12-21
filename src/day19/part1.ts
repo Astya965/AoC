@@ -6,52 +6,92 @@ const input = parseInput({
   },
 });
 
+type TState = {
+  resources: number[],
+  robots: number[],
+  time: number
+};
+
 const MAX_TIME = 24;
 
-const parseBlueprint = (input: string[][]) => {
-  const restrictions: number[] = [0, 0, 0];
-  const blueprints = [];
+export const parseBlueprint = (input: string[][]): number[][][] => {
+  const blueprints: number[][][] = [];
+  const indexs: Map<string, number> = new Map();
+  indexs.set("ore", 0);
+  indexs.set("clay", 1);
+  indexs.set("obsidian", 2);
 
   for (let i = 0; i < input.length; i++) {
-    const [
-      blueprintInfo,
-      oreRobotInfo,
-      clayRobotInfo,
-      obsidianRobotInfo,
-      geodeRobotInfo,
-    ] = input[i];
+    // First sentance is not instruction
+    const blueprint = input[i].slice(1, input[i].length - 1).map((instruction) => {
+      const costs = [0, 0, 0, 0];
+      Array.from(instruction.matchAll(/(\d+) (\w+)/g)).forEach(
+        ([_, cost, type]) => {
+          costs[indexs.get(type) || 0] = Number(cost);
+        }
+      );
+      return costs;
+    });
+    blueprints.push(blueprint);
+  }
+  return blueprints;
+};
 
-    const [obsidianRobotOreCost, obsidianRobotCleyCost] =
-      parseInfo(obsidianRobotInfo);
-    const [geodeRobotOreCost, geodeRobotObsidianCost] =
-      parseInfo(geodeRobotInfo);
+// bfs
+export const testBlueprint = (blueprint: number[][], timeAvailable: number): number => {
+  const queue = [
+    {
+      resources: [0, 0, 0, 0],
+      robots: [1, 0, 0, 0],
+      time: timeAvailable,
+    } as TState
+  ];
+  let max = 0;
 
-      
+  while (queue.length > 0) {
+    const current = queue.pop();
+    if (!current) {
+      break;
+    }
+    let { resources, robots, time } = current;
+
+    max = Math.max(max, resources[3] + robots[3] * time); // Can be produced by geode robot without building new one
+
+    blueprint.forEach((requirements, robotType) => { // Build new robots
+      let buildTime = 1;
+
+      requirements.forEach((cost, type) => { // Skip time to moment when we get enough resources for one robot
+        const timeForResource = Math.ceil((cost - resources[type]) / robots[type]);
+        if (cost > 0) {
+          buildTime = Math.max(buildTime, timeForResource + 1);
+        };
+      });
+
+      if (buildTime < time) {
+        const nextResources = [...resources];
+        const nextRobots = [...robots];
+
+        requirements.forEach((cost, r) => {
+          nextResources[r] += robots[r] * buildTime - cost;
+        });
+        nextRobots[robotType]++;
+
+        queue.push({ // Add new state
+          resources: nextResources,
+          robots: nextRobots,
+          time: time - buildTime,
+        });
+      }
+    });
   }
 
-  return restrictions;
-};
-
-const parseInfo = (info: string) => {
-  const match = info.matchAll(/\d+/g) || [];
-  return Array.from(match).map((match) => Number(match[0]));
-};
-
-const testBlueprint = (time: number, resources: number[], robots: [], restrictions: number[]) => {
-    if (time === 0) {
-      return resources[3]; //geode
-    }
-
-
-  
+  return max;
 };
 
 const blueprints = parseBlueprint(input);
 
-export default "";
-
-// В каждую минуту мы можем проверять количество роботов и руды
-// Добавлять для следующей минуты все возможные комбинации роботов + руды
-// Нам не нужно больше роботов и руды, чем по итогу руды
-// Ищем из всего этого максимальное
-// bfs с нюансами :) Граф из возможных вариантов
+export default blueprints.reduce(
+  (acc: number, blueprint: number[][], i: number) =>
+    acc + (i + 1) * testBlueprint(blueprint, MAX_TIME),
+  0
+);
