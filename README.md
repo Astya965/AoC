@@ -35,4 +35,6 @@ Command returns solution. Required flags: --date and --part
 17. [Day 17: Pyroclastic Flow](https://github.com/Astya965/AoC/tree/main/src/day17)
 18. [Day 18: Boiling Boulders](https://github.com/Astya965/AoC/tree/main/src/day18)
 19. [Day 19: Not Enough Minerals](https://github.com/Astya965/AoC/tree/main/src/day19)
+20. [Day 20: Grove Positioning System](https://github.com/Astya965/AoC/tree/main/src/day20)
 21. [Day 21: Monkey Math](https://github.com/Astya965/AoC/tree/main/src/day21)
+22. [Day 22: Monkey Map](https://github.com/Astya965/AoC/tree/main/src/day22)
